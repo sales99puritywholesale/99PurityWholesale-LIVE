@@ -129,7 +129,7 @@ const metaAds = (
 const seo = (
   <>
     {/* Search Console */}
-    <Win className="left-3 top-6 h-[218px] w-[238px]" data-s="">
+    <Win className="left-3 top-6 h-[218px] w-[238px] max-lg:left-[81px] max-lg:top-[58px] max-lg:h-[164px]" data-s="">
       <div className="flex h-7 items-center gap-1.5 border-b border-[#0B0F14]/10 px-2.5">
         <span className="flex h-3.5 w-3.5 items-center justify-center rounded bg-[#1A73E8] text-white">
           <Search className="h-2 w-2" strokeWidth={3} />
@@ -162,7 +162,7 @@ const seo = (
       </div>
     </Win>
     {/* Google Analytics */}
-    <Win className="left-[150px] top-[78px] h-[190px] w-[242px] z-10" data-sr="">
+    <Win className="left-[150px] top-[78px] h-[190px] w-[242px] z-10 max-lg:hidden" data-sr="">
       <div className="flex h-7 items-center gap-1.5 border-b border-[#0B0F14]/10 px-2.5">
         <span className="flex items-end gap-[1.5px]">
           <span className="h-2 w-[3px] rounded-sm bg-[#E37400]" />
@@ -274,7 +274,7 @@ const payments = (
       <AppleGlyph size={14} />
       Pay
     </div>
-    <div data-p="" className="absolute left-[222px] top-[212px] flex w-[166px] items-center gap-2 rounded-xl border border-[#31A24C]/30 bg-white px-2.5 py-2 shadow-[0_12px_30px_rgba(11,15,20,0.16)]">
+    <div data-p="" className="absolute left-[222px] top-[212px] flex w-[166px] items-center gap-2 rounded-xl border border-[#31A24C]/30 max-lg:hidden bg-white px-2.5 py-2 shadow-[0_12px_30px_rgba(11,15,20,0.16)]">
       <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#31A24C] text-white">
         <Check className="h-3 w-3" strokeWidth={3} />
       </span>
@@ -584,7 +584,7 @@ const web = (
       <Chrome url="yourstore.com" />
       {siteBlock}
     </Win>
-    <div data-sr="" className="absolute bottom-3 right-6 flex items-center gap-1.5 rounded-full border border-[#0B0F14]/10 bg-white px-2.5 py-1.5 text-[7.5px] font-medium shadow-[0_8px_24px_rgba(11,15,20,0.14)]">
+    <div data-sr="" className="absolute bottom-3 right-6 flex items-center gap-1.5 max-lg:hidden rounded-full border border-[#0B0F14]/10 bg-white px-2.5 py-1.5 text-[7.5px] font-medium shadow-[0_8px_24px_rgba(11,15,20,0.14)]">
       <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#31A24C] text-white">
         <Check className="h-2 w-2" strokeWidth={3} />
       </span>
@@ -645,7 +645,7 @@ const redesign = (
     </Win>
     <span data-p="" className="absolute left-3 top-1.5 rounded-full bg-[#0B0F14]/10 px-2 py-[2px] font-mono text-[7px] uppercase tracking-[0.16em] text-[#0B0F14]/55">Before</span>
     <span data-p="" className="absolute right-3 top-1.5 rounded-full bg-[#2BB0C0]/15 px-2 py-[2px] font-mono text-[7px] uppercase tracking-[0.16em] text-[#0B6F7B]">After</span>
-    <div data-p="" className="absolute left-[179px] top-[118px] flex h-[42px] w-[42px] items-center justify-center rounded-full border-4 border-white bg-[#0B0F14] text-white shadow-lg">
+    <div data-p="" className="absolute left-[179px] top-[118px] max-lg:hidden flex h-[42px] w-[42px] items-center justify-center rounded-full border-4 border-white bg-[#0B0F14] text-white shadow-lg">
       <span className="text-[11px] tracking-tighter">⇄</span>
     </div>
     <div data-u="" className="absolute bottom-1 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-[#0B0F14]/10 bg-white px-2.5 py-1 text-[7.5px] font-medium shadow-md">

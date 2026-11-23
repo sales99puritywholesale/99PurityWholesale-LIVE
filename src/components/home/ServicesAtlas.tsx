@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { ArrowUpRight, Check } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowUpRight, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { registerGsap, useIsoLayoutEffect, clearInline, MOTION_OK, FINE_POINTER } from './gsap-setup';
 import { SERVICE_ART } from './service-art';
 import { SERVICE_UI } from './service-ui';
@@ -27,19 +27,21 @@ export interface AtlasGroup {
  * Hover / focus / tap (and scrolling, on touch screens) selects a service and replays
  * its illustration. Everything is real text in the HTML; GSAP only adds motion.
  */
-export default function ServicesAtlas({ groups, labels, href }: { groups: AtlasGroup[]; labels: { hint: string; learn: string; of: string }; href: string }) {
+export default function ServicesAtlas({ groups, labels, href }: { groups: AtlasGroup[]; labels: { hint: string; learn: string; of: string; swipe?: string; prev?: string; next?: string }; href: string }) {
   const flat = groups.flatMap((g) => g.items.map((it) => ({ ...it, group: g.label })));
   const [active, setActive] = useState(0);
   const { hasService } = usePlan();
   const root = useRef<HTMLDivElement>(null);
+  const track = useRef<HTMLDivElement>(null);
 
-  // touch / small screens: the row crossing the middle of the viewport becomes active
+  // touch laptops / tablets in landscape: the row crossing the middle of the viewport becomes active
+  // (phones use the swipe slider below)
   useIsoLayoutEffect(() => {
     const { gsap, ScrollTrigger } = registerGsap();
     const el = root.current;
     if (!el) return;
     const mm = gsap.matchMedia();
-    mm.add('(max-width: 1023px), (hover: none)', () => {
+    mm.add('(min-width: 1024px) and (hover: none)', () => {
       // measured live (rows grow when expanded, so fixed per-row triggers would go stale)
       const rows = Array.from(el.querySelectorAll<HTMLElement>('[data-row] > button'));
       ScrollTrigger.create({
@@ -68,12 +70,16 @@ export default function ServicesAtlas({ groups, labels, href }: { groups: AtlasG
   // scale the fixed 400 x 280 UI canvases to whatever width the stage has
   useIsoLayoutEffect(() => {
     const el = root.current;
-    const wrap = el?.querySelector<HTMLElement>('[data-art-wrap]');
-    if (!el || !wrap) return;
-    const apply = () => el.style.setProperty('--svc-scale', String(Math.max(0.5, wrap.clientWidth / 400)));
+    if (!el) return;
+    const wraps = Array.from(el.querySelectorAll<HTMLElement>('[data-art-wrap]'));
+    if (!wraps.length) return;
+    const apply = () => {
+      const w = Math.max(...wraps.map((n) => n.clientWidth));
+      if (w > 0) el.style.setProperty('--svc-scale', String(Math.max(0.5, w / 400)));
+    };
     apply();
     const ro = new ResizeObserver(apply);
-    ro.observe(wrap);
+    wraps.forEach((n) => ro.observe(n));
     return () => ro.disconnect();
   }, []);
 
@@ -111,7 +117,8 @@ export default function ServicesAtlas({ groups, labels, href }: { groups: AtlasG
   useIsoLayoutEffect(() => {
     const { gsap, ScrollTrigger } = registerGsap();
     const el = root.current;
-    const panel = el?.querySelector<HTMLElement>(`[data-panel="${active}"]`);
+    const phone = typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches;
+    const panel = el?.querySelector<HTMLElement>(phone ? `[data-slide="${active}"]` : `[data-panel="${active}"]`);
     if (!el || !panel) return;
     const q = gsap.utils.selector(panel);
     const mm = gsap.matchMedia();
@@ -154,13 +161,128 @@ export default function ServicesAtlas({ groups, labels, href }: { groups: AtlasG
     };
   }, [active]);
 
+  // phones: the slide that is mostly in view becomes the active one while swiping
+  useEffect(() => {
+    const t = track.current;
+    if (!t || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.slide));
+        });
+      },
+      { root: t, threshold: 0.6 },
+    );
+    t.querySelectorAll<HTMLElement>('[data-slide]').forEach((n) => io.observe(n));
+    return () => io.disconnect();
+  }, []);
+
+  const goTo = (i: number) => {
+    const t = track.current;
+    const card = t?.querySelectorAll<HTMLElement>('[data-slide]')[Math.max(0, Math.min(flat.length - 1, i))];
+    if (!t || !card) return;
+    const pad = parseFloat(getComputedStyle(t).paddingLeft) || 0;
+    t.scrollTo({ left: card.offsetLeft - pad, behavior: window.matchMedia(MOTION_OK).matches ? 'smooth' : 'auto' });
+  };
+
+  const art = (key: string) =>
+    SERVICE_UI[key] ? (
+      <div className="relative w-full" style={{ aspectRatio: '400 / 280' }} aria-hidden>
+        <div className="absolute left-0 top-0 origin-top-left" style={{ width: 400, height: 280, transform: 'scale(var(--svc-scale, 1))' }}>
+          {SERVICE_UI[key]}
+        </div>
+      </div>
+    ) : (
+      <svg viewBox="0 0 400 280" className="h-auto w-full" aria-hidden role="presentation">
+        {SERVICE_ART[key]}
+      </svg>
+    );
+
   const total = String(flat.length).padStart(2, '0');
   let offset = 0;
 
   return (
     <div ref={root} className="svc-art lg:grid lg:grid-cols-12 lg:gap-14">
-      {/* ---------- stage ---------- */}
-      <div className="sticky top-[84px] z-20 -mx-1 mb-6 px-1 lg:static lg:top-auto lg:z-auto lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:mx-0 lg:mb-0 lg:px-0">
+      {/* ---------- phones: one swipeable card per service ---------- */}
+      <div className="lg:hidden">
+        <div
+          ref={track}
+          role="region"
+          aria-label={labels.swipe}
+          tabIndex={0}
+          className="relative -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-px-5 px-5 pb-2 [scrollbar-width:none] md:-mx-10 md:scroll-px-10 md:px-10 [&::-webkit-scrollbar]:hidden"
+        >
+          {flat.map((it, i) => (
+            <article
+              key={it.key}
+              data-slide={i}
+              className="w-[86%] shrink-0 snap-start overflow-hidden rounded-[1.5rem] border border-[#E6EAF1] bg-white text-[#0B0F14] shadow-[0_24px_60px_rgba(11,15,20,0.07)] sm:w-[70%]"
+            >
+              <div className="relative">
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(11,15,20,0.09)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(ellipse_at_center,#000_40%,transparent_90%)]" />
+                <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#4FC3D0]/20 blur-[90px]" />
+                <div className="relative flex items-center justify-between px-5 pt-4 font-dm-mono text-[10px] uppercase tracking-[0.2em] text-[#0B0F14]/50">
+                  <span>
+                    <span className="text-[#0B6F7B]">{String(i + 1).padStart(2, '0')}</span> / {total}
+                  </span>
+                  <span className="rounded-full border border-[#E6EAF1] px-3 py-1">{it.group}</span>
+                </div>
+                <div className="relative px-3 pb-2 pt-1">
+                  <div data-art-wrap className="mx-auto w-full max-w-[420px]">
+                    {art(it.key)}
+                  </div>
+                </div>
+              </div>
+              <div className="border-t border-[#E6EAF1] px-5 pb-5 pt-4">
+                <div className="mb-2 font-dm-sans text-[1.35rem] font-light leading-tight tracking-[-0.035em]">{it.name}</div>
+                <p className="mb-3 text-[13px] leading-relaxed text-[#0B0F14]/60">{it.desc}</p>
+                <ul className="mb-4 space-y-1.5">
+                  {it.points.map((pt) => (
+                    <li key={pt} className="flex items-center gap-2.5 text-[12.5px] text-[#0B0F14]/80">
+                      <span className="h-[5px] w-[5px] shrink-0 bg-[#4FC3D0]" />
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex flex-wrap items-center gap-3">
+                  <PillButton href={href} variant="dark">
+                    {labels.learn}
+                  </PillButton>
+                  <AddToPlanButton serviceKey={it.key} />
+                </div>
+              </div>
+            </article>
+          ))}
+          <span aria-hidden className="w-px shrink-0" />
+        </div>
+
+        <div className="mt-5 flex items-center justify-between">
+          <div className="flex items-center gap-1.5" role="group" aria-label={labels.swipe}>
+            {flat.map((it, i) => (
+              <button
+                key={it.key}
+                type="button"
+                onClick={() => goTo(i)}
+                aria-label={it.name}
+                aria-current={i === active ? 'true' : undefined}
+                className={`h-[6px] rounded-full transition-all duration-300 ${i === active ? 'w-5 bg-[#0B6F7B]' : 'w-[6px] bg-[#0B0F14]/20'}`}
+              />
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <button type="button" onClick={() => goTo(active - 1)} disabled={active === 0} aria-label={labels.prev ?? 'Previous'} className="flex h-9 w-9 items-center justify-center rounded-full border border-[#0B0F14]/15 text-[#0B0F14] transition-colors disabled:opacity-30">
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button type="button" onClick={() => goTo(active + 1)} disabled={active === flat.length - 1} aria-label={labels.next ?? 'Next'} className="flex h-9 w-9 items-center justify-center rounded-full border border-[#0B0F14]/15 bg-[#0B0F14] text-white transition-colors disabled:opacity-30">
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+        {labels.swipe && <p className="mt-4 font-dm-mono text-[10px] uppercase tracking-[0.2em] text-[#0B0F14]/40">{labels.swipe}</p>}
+      </div>
+
+      {/* ---------- stage (desktop) ---------- */}
+      <div className="sticky top-[84px] z-20 -mx-1 mb-6 px-1 max-lg:hidden lg:static lg:top-auto lg:z-auto lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:mx-0 lg:mb-0 lg:px-0">
         <div data-stage className="overflow-hidden rounded-[1.5rem] border border-[#E6EAF1] bg-white text-[#0B0F14] shadow-[0_24px_60px_rgba(11,15,20,0.07)] lg:sticky lg:top-[88px] lg:rounded-[1.75rem]">
           <div className="relative">
             <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(11,15,20,0.09)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(ellipse_at_center,#000_40%,transparent_90%)]" />
@@ -183,17 +305,7 @@ export default function ServicesAtlas({ groups, labels, href }: { groups: AtlasG
                   className="invisible col-start-1 row-start-1 opacity-0 transition-[opacity,visibility] duration-500 data-[on=true]:visible data-[on=true]:opacity-100"
                 >
                   <div data-art-wrap className="mx-auto w-full max-w-[420px] will-change-transform lg:max-w-[min(420px,44vh)]">
-                    {SERVICE_UI[it.key] ? (
-                      <div className="relative w-full" style={{ aspectRatio: '400 / 280' }} aria-hidden>
-                        <div className="absolute left-0 top-0 origin-top-left" style={{ width: 400, height: 280, transform: 'scale(var(--svc-scale, 1))' }}>
-                          {SERVICE_UI[it.key]}
-                        </div>
-                      </div>
-                    ) : (
-                      <svg viewBox="0 0 400 280" className="h-auto w-full" aria-hidden role="presentation">
-                        {SERVICE_ART[it.key]}
-                      </svg>
-                    )}
+                    {art(it.key)}
                   </div>
                 </div>
               ))}
@@ -231,8 +343,8 @@ export default function ServicesAtlas({ groups, labels, href }: { groups: AtlasG
         <p className="mt-4 hidden font-dm-mono text-[10px] uppercase tracking-[0.2em] text-[#0B0F14]/40 lg:block">{labels.hint}</p>
       </div>
 
-      {/* ---------- list ---------- */}
-      <div className="max-lg:pb-[300px] lg:col-span-6 lg:col-start-1 lg:row-start-1">
+      {/* ---------- list (desktop) ---------- */}
+      <div className="max-lg:hidden lg:col-span-6 lg:col-start-1 lg:row-start-1">
         {groups.map((g) => {
           const start = offset;
           offset += g.items.length;

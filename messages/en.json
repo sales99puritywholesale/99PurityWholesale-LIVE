@@ -481,7 +481,10 @@
             "Documentation checklists"
           ]
         }
-      }
+      },
+      "swipe": "Swipe to explore each service",
+      "prev": "Previous service",
+      "next": "Next service"
     },
     "WhyUs": {
       "eyebrow": "The difference",
@@ -519,6 +522,112 @@
       "badge": "Our own site data",
       "source": "Source: our own Google Search Console and Google Analytics accounts.",
       "note": "Daily figures exported from Google Search Console and Google Analytics. Date ranges are shown on each view. Past results do not guarantee future results."
+    },
+    "Platform": {
+      "eyebrow": "The platform",
+      "title": "What you can do, and what we handle",
+      "description": "Approved partners get a private client portal. You order, track and pull documents; we take care of testing, fulfillment and shipping behind the scenes.",
+      "tabsLabel": "Platform view",
+      "tabs": {
+        "you": "What you can do",
+        "we": "What we handle"
+      },
+      "note": "Interface preview with sample data.",
+      "cta": "Apply for wholesale access",
+      "cta2": "Talk to our team",
+      "features": {
+        "you": [
+          {
+            "nav": "Shop",
+            "title": "Order from the wholesale catalog",
+            "desc": "Browse the catalog, build a cart and check out. Quantities and tier pricing update as you add kits."
+          },
+          {
+            "nav": "Orders",
+            "title": "Follow every order",
+            "desc": "See each order move from placed to shipped, with tracking and the invoice attached to the same record."
+          },
+          {
+            "nav": "Certificates",
+            "title": "Pull batch-matched COAs",
+            "desc": "Open the certificate of analysis for the lots you receive and download it whenever you need it for your own records."
+          },
+          {
+            "nav": "API",
+            "title": "Connect your own store",
+            "desc": "Create API keys and send orders from your storefront or system. Test keys let you try the flow without placing a real order."
+          }
+        ],
+        "we": [
+          {
+            "nav": "Account",
+            "title": "We set up your account",
+            "desc": "Once your application is approved, we set your tier pricing and open your portal access so you can start ordering."
+          },
+          {
+            "nav": "Testing",
+            "title": "We test and certify every lot",
+            "desc": "Each lot is independently verified and comes with its own certificate of analysis, matched to the batch you receive."
+          },
+          {
+            "nav": "Fulfillment",
+            "title": "We pack and ship your orders",
+            "desc": "Orders from your portal, or sent to us for your own customers, are packed and shipped with tracking so you do not have to handle it."
+          },
+          {
+            "nav": "Stock",
+            "title": "We hold and track your stock",
+            "desc": "Inventory we hold for your fulfillment orders, and inbound shipments you send us, show up in your portal so you always know what is on hand."
+          }
+        ]
+      },
+      "ui": {
+        "catalog": "Catalog",
+        "kits": "Kits in cart",
+        "tier1": "Tier 1",
+        "tier2": "Tier 2",
+        "tier3": "Tier 3",
+        "nextTier": "Progress to next tier",
+        "checkout": "Checkout",
+        "placed": "Placed",
+        "confirmed": "Confirmed",
+        "packed": "Packed",
+        "shipped": "Shipped",
+        "orderRef": "Order",
+        "tracking": "Tracking",
+        "carrier": "Carrier",
+        "invoice": "Invoice",
+        "issued": "Issued",
+        "library": "Certificates of analysis",
+        "pdf": "PDF",
+        "chromatogram": "HPLC trace",
+        "sample": "Illustrative trace",
+        "orderCreated": "Order created",
+        "apiTitle": "One request, one order",
+        "apiNote": "Send an external reference, a recipient and SKU lines. Retries are safe when you send an Idempotency-Key header.",
+        "testKey": "Test keys",
+        "webhooks": "Webhooks",
+        "accountSetup": "Account setup",
+        "ready": "Ready",
+        "stepApplication": "Application received",
+        "stepDocs": "Documents reviewed",
+        "stepApproved": "Account approved",
+        "stepTier": "Tier pricing set",
+        "stepPortal": "Portal access ready",
+        "labSynth": "Synthesis",
+        "labTest": "Independent testing",
+        "labCoa": "COA issued",
+        "lot": "Lot",
+        "yourStore": "Your store",
+        "us": "99 Purity",
+        "yourCustomer": "Your customer",
+        "orderIn": "Order received",
+        "received": "Received",
+        "stock": "Your stock",
+        "inStock": "Held for you",
+        "inbound": "Inbound shipment",
+        "inTransit": "In transit"
+      }
     }
   },
   "Search": {

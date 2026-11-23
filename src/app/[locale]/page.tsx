@@ -11,6 +11,7 @@ import PlanBar from '@/components/plan/PlanBar';
 import Proof from '@/components/home/Proof';
 import WhyUs from '@/components/home/WhyUs';
 import Highlights from '@/components/home/Highlights';
+import PlatformShowcase from '@/components/home/PlatformShowcase';
 import { HIGHLIGHT_MEDIA } from '@/components/home/highlights-media';
 import { RevealGroup, SplitHeading } from '@/components/home/Reveal';
 import { Eyebrow, PillButton, ArrowDot, Photo, h2, card } from '@/components/home/ui';
@@ -132,7 +133,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
 
           <ServicesAtlas
             href="/services"
-            labels={{ hint: t('ServicesAtlas.hint'), learn: t('ServicesAtlas.learn'), of: t('ServicesAtlas.of') }}
+            labels={{ hint: t('ServicesAtlas.hint'), learn: t('ServicesAtlas.learn'), of: t('ServicesAtlas.of'), swipe: t('ServicesAtlas.swipe'), prev: t('ServicesAtlas.prev'), next: t('ServicesAtlas.next') }}
             groups={ATLAS_GROUPS.map((g) => ({
               key: g.key,
               label: t(`ServicesAtlas.groups.${g.key}`),
@@ -227,6 +228,25 @@ export default async function HomePage({ params }: { params: { locale: string } 
           description={t('Highlights.description')}
           labels={{ prev: t('Highlights.prev'), next: t('Highlights.next'), visit: t('Highlights.visit'), live: t('Highlights.live') }}
           slides={HIGHLIGHT_MEDIA.map((m) => ({ key: m.key, name: m.name, host: m.host, href: m.href, poster: m.poster, phone: m.phone, desc: t(`Highlights.sites.${m.key}`) }))}
+        />
+      </section>
+
+      {/* 05b — PLATFORM (client portal + admin console, animated previews) */}
+      <section className="pb-20 md:pb-28">
+        <PlatformShowcase
+          eyebrow={t('Platform.eyebrow')}
+          title={t('Platform.title')}
+          description={t('Platform.description')}
+          note={t('Platform.note')}
+          tabsLabel={t('Platform.tabsLabel')}
+          tabs={{ you: t('Platform.tabs.you'), we: t('Platform.tabs.we') }}
+          features={{
+            you: t.raw('Platform.features.you') as Array<{ nav: string; title: string; desc: string }>,
+            we: t.raw('Platform.features.we') as Array<{ nav: string; title: string; desc: string }>,
+          }}
+          ui={t.raw('Platform.ui') as Record<string, string>}
+          cta={{ label: t('Platform.cta'), href: '/wholesale-application' }}
+          cta2={{ label: t('Platform.cta2'), href: '/contact' }}
         />
       </section>
 

@@ -481,7 +481,10 @@
             "Listas de documentación"
           ]
         }
-      }
+      },
+      "swipe": "Deslice para explorar cada servicio",
+      "prev": "Servicio anterior",
+      "next": "Servicio siguiente"
     },
     "WhyUs": {
       "eyebrow": "La diferencia",
@@ -519,6 +522,112 @@
       "badge": "Datos de nuestro propio sitio",
       "source": "Fuente: nuestras propias cuentas de Google Search Console y Google Analytics.",
       "note": "Cifras diarias exportadas de Google Search Console y Google Analytics. Los rangos de fechas se muestran en cada vista. Los resultados pasados no garantizan resultados futuros."
+    },
+    "Platform": {
+      "eyebrow": "La plataforma",
+      "title": "Lo que usted puede hacer y lo que gestionamos nosotros",
+      "description": "Los socios aprobados reciben un portal privado. Usted pide, rastrea y descarga documentos; nosotros nos encargamos de las pruebas, el despacho y el envío.",
+      "tabsLabel": "Vista de la plataforma",
+      "tabs": {
+        "you": "Lo que usted puede hacer",
+        "we": "Lo que gestionamos"
+      },
+      "note": "Vista previa de la interfaz con datos de muestra.",
+      "cta": "Solicitar acceso mayorista",
+      "cta2": "Hable con nuestro equipo",
+      "features": {
+        "you": [
+          {
+            "nav": "Tienda",
+            "title": "Pida del catálogo mayorista",
+            "desc": "Explore el catálogo, arme su carrito y finalice la compra. Las cantidades y los precios por nivel se actualizan al agregar kits."
+          },
+          {
+            "nav": "Pedidos",
+            "title": "Siga cada pedido",
+            "desc": "Vea cómo cada pedido pasa de recibido a enviado, con el seguimiento y la factura en el mismo registro."
+          },
+          {
+            "nav": "Certificados",
+            "title": "Descargue COA por lote",
+            "desc": "Abra el certificado de análisis de los lotes que recibe y descárguelo cuando lo necesite para sus propios registros."
+          },
+          {
+            "nav": "API",
+            "title": "Conecte su propia tienda",
+            "desc": "Cree claves de API y envíe pedidos desde su tienda o sistema. Las claves de prueba permiten probar el flujo sin hacer un pedido real."
+          }
+        ],
+        "we": [
+          {
+            "nav": "Cuenta",
+            "title": "Configuramos su cuenta",
+            "desc": "Una vez aprobada su solicitud, definimos sus precios por nivel y abrimos su acceso al portal para que pueda empezar a pedir."
+          },
+          {
+            "nav": "Pruebas",
+            "title": "Probamos y certificamos cada lote",
+            "desc": "Cada lote se verifica de forma independiente y llega con su propio certificado de análisis, correspondiente al lote que usted recibe."
+          },
+          {
+            "nav": "Despacho",
+            "title": "Empacamos y enviamos sus pedidos",
+            "desc": "Los pedidos de su portal, o los que nos envía para sus propios clientes, se empacan y se envían con seguimiento para que usted no tenga que ocuparse."
+          },
+          {
+            "nav": "Inventario",
+            "title": "Guardamos y controlamos su inventario",
+            "desc": "El inventario que mantenemos para sus pedidos de despacho y los envíos entrantes que nos manda aparecen en su portal, para que siempre sepa qué hay disponible."
+          }
+        ]
+      },
+      "ui": {
+        "catalog": "Catálogo",
+        "kits": "Kits en el carrito",
+        "tier1": "Nivel 1",
+        "tier2": "Nivel 2",
+        "tier3": "Nivel 3",
+        "nextTier": "Avance al siguiente nivel",
+        "checkout": "Finalizar compra",
+        "placed": "Recibido",
+        "confirmed": "Confirmado",
+        "packed": "Empacado",
+        "shipped": "Enviado",
+        "orderRef": "Pedido",
+        "tracking": "Seguimiento",
+        "carrier": "Transportista",
+        "invoice": "Factura",
+        "issued": "Emitida",
+        "library": "Certificados de análisis",
+        "pdf": "PDF",
+        "chromatogram": "Traza HPLC",
+        "sample": "Traza ilustrativa",
+        "orderCreated": "Pedido creado",
+        "apiTitle": "Una solicitud, un pedido",
+        "apiNote": "Envíe una referencia externa, un destinatario y líneas de SKU. Los reintentos son seguros si envía el encabezado Idempotency-Key.",
+        "testKey": "Claves de prueba",
+        "webhooks": "Webhooks",
+        "accountSetup": "Configuración de cuenta",
+        "ready": "Lista",
+        "stepApplication": "Solicitud recibida",
+        "stepDocs": "Documentos revisados",
+        "stepApproved": "Cuenta aprobada",
+        "stepTier": "Precios por nivel definidos",
+        "stepPortal": "Acceso al portal listo",
+        "labSynth": "Síntesis",
+        "labTest": "Pruebas independientes",
+        "labCoa": "COA emitido",
+        "lot": "Lote",
+        "yourStore": "Su tienda",
+        "us": "99 Purity",
+        "yourCustomer": "Su cliente",
+        "orderIn": "Pedido recibido",
+        "received": "Recibido",
+        "stock": "Su inventario",
+        "inStock": "Reservado para usted",
+        "inbound": "Envío entrante",
+        "inTransit": "En tránsito"
+      }
     }
   },
   "Search": {

@@ -158,3 +158,16 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Services atlas: SVG shapes animate around their own box */
 .svc-art svg * { transform-box: fill-box; }
+
+/* Homepage platform showcase: feature progress bar + pane entrance */
+@keyframes plat-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes plat-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[plat-in_500ms_ease-out_both\] { animation: none; }
+}
