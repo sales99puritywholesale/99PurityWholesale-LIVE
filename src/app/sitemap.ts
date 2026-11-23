@@ -4,6 +4,7 @@ import locationsData from '@/data/locations.json';
 import citiesData from '@/data/cities.json';
 import { getAllPosts } from '@/utils/mdx';
 import servicesRegistry from '@/data/services-content/index';
+import { CALCULATOR_ENABLED } from '@/lib/site-flags';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://99puritywholesale.com';
 const locales = ['en', 'es'];
@@ -38,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
     '',
     '/about',
-    '/peptide-calculator',
+    ...(CALCULATOR_ENABLED ? ['/peptide-calculator'] : []),
     '/certificates-of-analysis',
     '/compliance',
     '/contact',

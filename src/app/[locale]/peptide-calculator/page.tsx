@@ -1,4 +1,6 @@
+import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
+import { CALCULATOR_ENABLED } from '@/lib/site-flags';
 import { getMessages } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
 import CalculatorClient from '@/components/calculator/CalculatorClient';
@@ -7,6 +9,7 @@ import CalculatorFaq from '@/components/calculator/CalculatorFaq';
 import { PageShell, PageHero, WRAP } from '@/components/home/page-kit';
 
 export async function generateMetadata(props: any) {
+  if (!CALCULATOR_ENABLED) notFound();
   const params = props?.params || {};
   const locale = params?.locale || 'en';
   const t = await getTranslations({ locale, namespace: 'Meta' });
@@ -65,6 +68,7 @@ export async function generateMetadata(props: any) {
 }
 
 export default async function CalculatorPage({ params }: { params: { locale: string } }) {
+  if (!CALCULATOR_ENABLED) notFound();
   const t = await getTranslations({ locale: params.locale, namespace: 'Calculator' });
   const messages = await getMessages({ locale: params.locale });
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://99puritywholesale.com';

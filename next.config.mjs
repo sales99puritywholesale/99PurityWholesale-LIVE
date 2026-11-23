@@ -76,21 +76,6 @@ const nextConfig = {
         destination: '/compliance',
         permanent: true,
       },
-      {
-        source: '/calculator',
-        destination: '/peptide-calculator',
-        permanent: true,
-      },
-      {
-        source: '/en/calculator',
-        destination: '/peptide-calculator',
-        permanent: true,
-      },
-      {
-        source: '/es/calculator',
-        destination: '/es/peptide-calculator',
-        permanent: true,
-      },
       // Bare /en needs its own rule: the catch-all below matches it with an empty
       // :path*, which renders an empty Location header rather than '/'.
       {

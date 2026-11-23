@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname } from '@/i18n/routing';
 import { ArrowRight, ArrowUp, Globe } from 'lucide-react';
 import { footerStates } from '@/data/footerStates';
+import { CALCULATOR_ENABLED } from '@/lib/site-flags';
 
 export default function Footer() {
   const t = useTranslations('Layout');
@@ -28,7 +29,7 @@ export default function Footer() {
         { label: t('nav.services'), href: '/services' },
         { label: t('nav.about'), href: '/about' },
         { label: t('nav.contact'), href: '/contact' },
-        { label: t('nav.calculator'), href: '/peptide-calculator' },
+        ...(CALCULATOR_ENABLED ? [{ label: t('nav.calculator'), href: '/peptide-calculator' }] : []),
         { label: t('footer.glossary'), href: '/glossary' },
       ],
     },

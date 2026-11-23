@@ -8,6 +8,7 @@ import GlobalSearch from '@/components/search/GlobalSearch';
 import CartIcon from '@/components/cart/CartIcon';
 import { useNestedSmoothScroll } from '@/hooks/useNestedSmoothScroll';
 import { usePlan } from '@/components/plan/PlanContext';
+import { CALCULATOR_ENABLED } from '@/lib/site-flags';
 
 export default function Header() {
   const t = useTranslations('Layout');
@@ -159,13 +160,15 @@ export default function Header() {
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full"></span>
             </Link>
 
-            <Link 
-              href="/peptide-calculator" 
-              className="text-[10px] font-bold text-black/70 hover:text-black transition-colors relative group py-1 uppercase tracking-[0.12em] whitespace-nowrap"
-            >
-              {t('nav.calculator')}
-              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full"></span>
-            </Link>
+            {CALCULATOR_ENABLED && (
+              <Link 
+                href="/peptide-calculator" 
+                className="text-[10px] font-bold text-black/70 hover:text-black transition-colors relative group py-1 uppercase tracking-[0.12em] whitespace-nowrap"
+              >
+                {t('nav.calculator')}
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            )}
 
             <Link 
               href="/blog" 
@@ -371,7 +374,7 @@ export default function Header() {
             <div className="flex flex-col gap-1">
               {[
                 { href: '/certificates-of-analysis', label: t('nav.coa'), icon: ShieldCheck, desc: 'Purity & Testing Standards' },
-                { href: '/peptide-calculator', label: t('nav.calculator'), icon: FlaskConical, desc: 'Reconstitution Utility' },
+                ...(CALCULATOR_ENABLED ? [{ href: '/peptide-calculator', label: t('nav.calculator'), icon: FlaskConical, desc: 'Reconstitution Utility' }] : []),
                 { href: '/services', label: t('nav.services'), icon: LayoutGrid, desc: 'Wholesale Solutions' },
                 { href: '/blog', label: t('nav.blog'), icon: Newspaper, desc: 'Research Updates & Insights' },
                 { href: '/about', label: t('nav.about'), icon: Info, desc: 'Our Laboratory Mission' },
