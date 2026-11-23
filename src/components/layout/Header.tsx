@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link, useRouter, usePathname } from '@/i18n/routing';
-import { Menu, X, Search, Globe, ChevronDown, Check, Command, FlaskConical, ShieldCheck, Newspaper, Info, Phone, LayoutGrid, ArrowRight } from 'lucide-react';
+import { Menu, X, Search, Globe, ChevronDown, Check, Command, FlaskConical, ShieldCheck, Newspaper, Info, Phone, LayoutGrid, ArrowRight, LogIn } from 'lucide-react';
 import GlobalSearch from '@/components/search/GlobalSearch';
 import CartIcon from '@/components/cart/CartIcon';
 import { useNestedSmoothScroll } from '@/hooks/useNestedSmoothScroll';
@@ -174,6 +174,14 @@ export default function Header() {
               {t('nav.blog')}
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full"></span>
             </Link>
+
+            <Link
+              href="/contact"
+              className="text-[10px] font-bold text-black/70 hover:text-black transition-colors relative group py-1 uppercase tracking-[0.12em] whitespace-nowrap"
+            >
+              {t('nav.contact')}
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full"></span>
+            </Link>
           </nav>
 
           {/* Right Actions Section */}
@@ -274,12 +282,14 @@ export default function Header() {
               {tp('cta')}
             </button>
 
-            <Link 
-              href="/contact" 
+            {/* The portal lives outside the locale routes, so this is a plain link (an i18n Link would prefix /es). */}
+            <a
+              href="/login"
+              rel="nofollow"
               className="hidden xl:flex items-center justify-center px-4 min-[1440px]:px-5 self-stretch bg-[#090C11] text-white rounded-full text-[11px] font-bold hover:bg-black transition-all active:scale-95 uppercase tracking-[0.12em]"
             >
-              Contact
-            </Link>
+              {t('nav.login')}
+            </a>
 
             {/* Mobile Toggle */}
             <button 
@@ -364,7 +374,8 @@ export default function Header() {
                 { href: '/peptide-calculator', label: t('nav.calculator'), icon: FlaskConical, desc: 'Reconstitution Utility' },
                 { href: '/services', label: t('nav.services'), icon: LayoutGrid, desc: 'Wholesale Solutions' },
                 { href: '/blog', label: t('nav.blog'), icon: Newspaper, desc: 'Research Updates & Insights' },
-                { href: '/about', label: t('nav.about'), icon: Info, desc: 'Our Laboratory Mission' }
+                { href: '/about', label: t('nav.about'), icon: Info, desc: 'Our Laboratory Mission' },
+                { href: '/contact', label: t('nav.contact'), icon: Phone, desc: 'Talk to our team' }
               ].map((link) => (
                 <Link 
                   key={link.href}
@@ -397,14 +408,15 @@ export default function Header() {
               {tp('cta')}
               <ArrowRight className="w-4 h-4" />
             </button>
-            <Link 
-              href="/contact"
+            <a
+              href="/login"
+              rel="nofollow"
               className="flex items-center justify-center gap-3 w-full p-5 bg-black text-white rounded-2xl font-bold text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all mb-8"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <Phone className="w-4 h-4" />
-              {t('nav.contact')}
-            </Link>
+              <LogIn className="w-4 h-4" />
+              {t('nav.login')}
+            </a>
 
             <div className="flex flex-col items-center gap-4 py-4 bg-black/[0.02] rounded-2xl">
               <span className="text-[10px] text-black/30 uppercase tracking-[0.4em] font-bold">{t('selectLanguage')}</span>
